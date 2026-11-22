@@ -13,7 +13,8 @@
   <header>
     <p>Tostadas del Fin</p>
     <h1>¿Qué se te antoja hoy?</h1>
-    <span>Pide desde tu mesa y envía tu orden por WhatsApp.</span>
+    <span>Pide en el local por WhatsApp.</span>
+    <p class="card-notice"><i class="card-icon" aria-hidden="true"></i> Aceptamos tarjeta</p>
   </header>
   <nav class="categories" aria-label="Ir a una categoría">
     <a href="#tostada">Tostadas</a><a href="#sope">Sopes</a><a href="#torta">Tortas</a>
@@ -67,8 +68,8 @@
   <h2 id="bebidas" class="section-title">Bebidas</h2>
   <section class="products" aria-label="Bebidas">
     <article aria-labelledby="agua-name"><div class="details">
-      <div class="title"><h2 id="agua-name">Agua de sabor</h2><p class="price"></p></div>
-      <button type="button" data-product="agua" aria-label="Personalizar agua de sabor">Personalizar</button>
+      <div class="title"><h2 id="agua-name">Agua de jamaica</h2><p class="price"></p></div>
+      <button type="button" data-product="agua" aria-label="Personalizar agua de jamaica">Personalizar</button>
     </div></article>
     <article aria-labelledby="refresco-name"><div class="details">
       <div class="title"><h2 id="refresco-name">Refresco</h2><p class="price"></p></div>
@@ -92,9 +93,6 @@
   <label id="fries-option" hidden><input type="checkbox" name="extra-fries"> <span id="fries-label">Agregar papas</span></label>
   <label id="portion-option" hidden>Tamaño
     <select name="portion"></select>
-  </label>
-  <label id="notes-option" hidden><span id="notes-label">Notas especiales</span>
-    <textarea name="notes" rows="2" maxlength="160"></textarea>
   </label>
   <div class="quantity">
     <label for="quantity">Cantidad</label>
@@ -127,18 +125,21 @@
   </div>
 </dialog>
 <dialog id="checkout" aria-labelledby="checkout-title">
-  <h2 id="checkout-title">Revisa tu pedido</h2>
+  <div class="review-heading">
+    <span class="check-badge" aria-hidden="true">✓</span>
+    <h2 id="checkout-title" tabindex="-1" autofocus>Tu pedido está listo para revisar</h2>
+  </div>
   <ul id="checkout-lines" class="order-lines"></ul>
   <p class="total">Total <span id="checkout-total"></span></p>
   <form id="checkout-form">
-    <label>Tu nombre <input id="customer" type="text" required maxlength="80" autocomplete="given-name"></label>
-    <label>Mesa o ubicación (opcional) <input id="location" type="text" maxlength="100" placeholder="Ej. Mesa 4"></label>
-    <label>Indicaciones generales (opcional) <textarea id="order-notes" rows="2" maxlength="200"></textarea></label>
     <fieldset class="payment">
       <legend>¿Cómo vas a pagar?</legend>
       <div class="payment-options">
         <label><input type="radio" name="payment" value="efectivo" required> Efectivo</label>
-        <label><input type="radio" name="payment" value="tarjeta" required> Tarjeta</label>
+        <label class="card-payment">
+          <input type="radio" name="payment" value="tarjeta" required>
+          <span>Tarjeta</span>
+        </label>
         <label><input type="radio" name="payment" value="transferencia" required> Transferencia</label>
       </div>
       <div id="transfer-details" class="transfer-details" hidden>
@@ -157,9 +158,9 @@
         </div>
       </div>
     </fieldset>
-    <p class="helper">WhatsApp abrirá el mensaje listo. Presiona Enviar ahí y espera la confirmación del local.</p>
+    <p class="helper">Elige cómo pagar. En WhatsApp, presiona «Enviar» para compartir el pedido con el local.</p>
     <div class="dialog-actions">
-      <button class="whatsapp" type="submit">Abrir WhatsApp</button>
+      <button id="send-order" class="whatsapp" type="submit" disabled>Abrir WhatsApp</button>
       <button id="back-cart" class="secondary" type="button">Volver al pedido</button>
     </div>
   </form>

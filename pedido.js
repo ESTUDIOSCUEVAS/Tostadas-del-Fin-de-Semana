@@ -33,7 +33,7 @@ function unitPrice(line) {
 }
 
 function variant(line) {
-  return JSON.stringify([line.id, line.size, line.removed, line.broth, line.fries, line.notes]);
+  return JSON.stringify([line.id, line.size, line.removed, line.broth, line.fries]);
 }
 
 function description(line) {
@@ -42,8 +42,7 @@ function description(line) {
     product.sizes?.[line.size]?.[0],
     line.removed.length ? 'Sin ' + line.removed.map(index => ingredients[index].toLowerCase()).join(', ') : product.ingredients && 'Con todo',
     line.broth && 'Con consomé',
-    line.fries && 'Con papas',
-    line.notes && 'Nota: ' + line.notes
+    line.fries && 'Con papas'
   ].filter(Boolean).join(' · ');
 }
 
@@ -64,7 +63,6 @@ function draft() {
     removed: product.ingredients ? ingredientInputs.flatMap((input, index) => input.checked ? [] : [index]) : [],
     broth: Boolean(product.broth && controls.broth.checked),
     fries: Boolean(product.fries && controls['extra-fries'].checked),
-    notes: product.notes ? controls.notes.value.trim().replace(/\s+/g, ' ') : '',
     quantity: controls.quantity.valueAsNumber
   };
 }
@@ -96,15 +94,12 @@ function openProduct(id, existing, index = -1) {
   byId('fries-option').hidden = !product.fries;
   byId('fries-label').textContent = 'Agregar papas (+' + money(product.fries || 0) + ')';
   byId('portion-option').hidden = !product.sizes;
-  byId('notes-option').hidden = !product.notes;
-  byId('notes-label').textContent = id === 'agua' ? 'Sabor (opcional)' : id === 'refresco' ? 'Refresco de tu preferencia (opcional)' : 'Notas especiales (opcional)';
   controls.portion.replaceChildren(...(product.sizes ?? []).map(([label, price], position) => new Option(label + ' · ' + money(price), position)));
   if (existing) {
     controls.portion.value = existing.size;
     ingredientInputs.forEach((input, position) => { input.checked = !existing.removed.includes(position); });
     controls.broth.checked = existing.broth;
     controls['extra-fries'].checked = existing.fries;
-    controls.notes.value = existing.notes;
     controls.quantity.value = index === -1 ? 1 : existing.quantity;
   }
   updateSubtotal();
@@ -212,8 +207,9 @@ form.addEventListener('submit', event => {
   }
   saveOrder();
   clearTimeout(statusTimeout);
-  byId('status').textContent = editIndex === -1 ? 'Agregado a tu pedido' : 'Producto actualizado';
-  statusTimeout = setTimeout(() => { byId('status').textContent = ''; }, 2500);
+  const feedback = editIndex === -1 ? 'Agregado a tu pedido' : 'Producto actualizado';
+  byId('status').replaceChildren(element('span', feedback, 'order-feedback'));
+  statusTimeout = setTimeout(() => { byId('status').textContent = ''; }, 2200);
   options.close();
 });
 
@@ -229,6 +225,7 @@ byId('review').addEventListener('click', () => {
   byId('checkout-total').textContent = money(total()) + ' MXN';
   order.close();
   checkout.showModal();
+  checkout.scrollTop = 0;
 });
 byId('back-cart').addEventListener('click', () => { checkout.close(); order.showModal(); });
 
@@ -247,6 +244,7 @@ checkoutForm.addEventListener('change', event => {
   if (event.target.name === 'payment') {
     byId('transfer-details').hidden = checkoutForm.elements.payment.value !== 'transferencia';
     byId('copy-status').textContent = '';
+    byId('send-order').disabled = !checkoutForm.elements.payment.value;
   }
 });
 
@@ -263,11 +261,9 @@ byId('copy-clabe').addEventListener('click', async () => {
   }
 });
 
-function orderMessage(name, reference, notes, payment) {
+function orderMessage(payment) {
   return [
     'Pedido en el local · Tostadas del Fin',
-    'Nombre: ' + name,
-    reference && 'Mesa o ubicación: ' + reference,
     '',
     ...lines.map(line => {
       const details = description(line);
@@ -275,25 +271,15 @@ function orderMessage(name, reference, notes, payment) {
     }),
     '',
     'Total: ' + money(total()) + ' MXN',
-    'Forma de pago: ' + payment,
-    notes && 'Indicaciones: ' + notes
-  ].filter(value => value !== false).join('\n');
+    'Forma de pago: ' + payment
+  ].join('\n');
 }
 
 checkoutForm.addEventListener('submit', event => {
   event.preventDefault();
-  const nameField = byId('customer');
-  const name = nameField.value.trim();
-  if (!name) {
-    nameField.value = '';
-    nameField.reportValidity();
-    return;
-  }
-  const reference = byId('location').value.trim();
-  const notes = byId('order-notes').value.trim().replace(/\s+/g, ' ');
   const payment = paymentLabels[checkoutForm.elements.payment.value];
   if (!payment) return;
-  const message = orderMessage(name, reference || false, notes || false, payment);
+  const message = orderMessage(payment);
   window.location.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(message);
 });
 renderOrder();
