@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f8f2e8">
+<meta name="description" content="Menú de Tostadas del Fin. Personaliza tus platillos y pide por WhatsApp en el local.">
+<title>Menú · Tostadas del Fin</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+  <header>
+    <p>Tostadas del Fin</p>
+    <h1>¿Qué se te antoja hoy?</h1>
+    <span>Pide desde tu mesa y envía tu orden por WhatsApp.</span>
+  </header>
+  <nav class="categories" aria-label="Ir a una categoría">
+    <a href="#tostada">Tostadas</a><a href="#sope">Sopes</a><a href="#torta">Tortas</a>
+    <a href="#superburro">Superburros</a><a href="#salchipapas">Salchipapas</a>
+    <a href="#papas">Papas</a><a href="#bebidas">Bebidas</a>
+  </nav>
+  <section class="products" aria-label="Menú">
+  <article id="tostada" aria-labelledby="tostada-name">
+    <div class="photo"><img alt="Tostada preparada con lechuga, tomate, cebolla morada, queso y aguacate" src="assets/tostada-480.webp" srcset="assets/tostada-480.webp 480w, assets/tostada-960.webp 960w" sizes="(max-width: 340px) calc(100vw - 40px), (max-width: 840px) 48vw, 400px" width="480" height="360" fetchpriority="high" decoding="async"></div>
+    <div class="details">
+      <div class="title"><h2 id="tostada-name">Tostada</h2><p class="price"></p></div>
+      <button data-product="tostada" type="button">Personalizar</button>
+    </div>
+  </article>
+  <article id="sope" aria-labelledby="sope-name">
+    <div class="photo"><img alt="Sope preparado con lechuga, tomate, cebolla morada, queso y aguacate" src="assets/sope-480.webp" srcset="assets/sope-480.webp 480w, assets/sope-960.webp 960w" sizes="(max-width: 340px) calc(100vw - 40px), (max-width: 840px) 48vw, 400px" width="480" height="360" loading="lazy" decoding="async"></div>
+    <div class="details">
+      <div class="title"><h2 id="sope-name">Sope</h2><p class="price"></p></div>
+      <button data-product="sope" type="button">Personalizar</button>
+    </div>
+  </article>
+  <article id="torta" aria-labelledby="torta-name">
+    <div class="photo"><img alt="Torta con pan dorado y chile al lado" src="assets/torta-480.webp" srcset="assets/torta-480.webp 480w, assets/torta-960.webp 960w" sizes="(max-width: 340px) calc(100vw - 40px), (max-width: 840px) 48vw, 400px" width="480" height="360" loading="lazy" decoding="async"></div>
+    <div class="details">
+      <div class="title"><h2 id="torta-name">Torta</h2><p class="price"></p></div>
+      <button data-product="torta" type="button" aria-label="Personalizar torta">Personalizar</button>
+    </div>
+  </article>
+  <article id="superburro" aria-labelledby="superburro-name">
+    <div class="photo"><img alt="Superburro en dos mitades con tortilla dorada y relleno a la vista" src="assets/superburro-480.webp" srcset="assets/superburro-480.webp 480w, assets/superburro-960.webp 960w" sizes="(max-width: 340px) calc(100vw - 40px), (max-width: 840px) 48vw, 400px" width="480" height="360" loading="lazy" decoding="async"></div>
+    <div class="details">
+      <div class="title"><h2 id="superburro-name">Superburro</h2><p class="price"></p></div>
+      <button data-product="superburro" type="button" aria-label="Personalizar superburro">Personalizar</button>
+    </div>
+  </article>
+  <article id="salchipapas" aria-labelledby="salchipapas-name">
+    <div class="photo"><img alt="Papas fritas con salchicha y salsa" src="assets/salchipapas-480.webp" srcset="assets/salchipapas-480.webp 480w, assets/salchipapas-960.webp 960w" sizes="(max-width: 340px) calc(100vw - 40px), (max-width: 840px) 48vw, 400px" width="480" height="360" loading="lazy" decoding="async"></div>
+    <div class="details">
+      <div class="title"><h2 id="salchipapas-name">Salchipapas</h2><p class="price"></p></div>
+      <button data-product="salchipapas" type="button" aria-label="Personalizar salchipapas">Personalizar</button>
+    </div>
+  </article>
+  <article id="papas" aria-labelledby="papas-name">
+    <div class="photo"><img alt="Imagen ilustrativa de papas fritas con salsa" src="assets/papas-480.webp" srcset="assets/papas-480.webp 480w, assets/papas-960.webp 960w" sizes="(max-width: 340px) calc(100vw - 40px), (max-width: 840px) 48vw, 400px" width="480" height="360" loading="lazy" decoding="async"></div>
+    <div class="details">
+      <div class="title"><h2 id="papas-name">Papas</h2><p class="price"></p></div>
+      <button data-product="papas" type="button" aria-label="Personalizar papas">Personalizar</button>
+    </div>
+  </article>
+  </section>
+  <h2 id="bebidas" class="section-title">Bebidas</h2>
+  <section class="products" aria-label="Bebidas">
+    <article aria-labelledby="agua-name"><div class="details">
+      <div class="title"><h2 id="agua-name">Agua de sabor</h2><p class="price"></p></div>
+      <button type="button" data-product="agua" aria-label="Personalizar agua de sabor">Personalizar</button>
+    </div></article>
+    <article aria-labelledby="refresco-name"><div class="details">
+      <div class="title"><h2 id="refresco-name">Refresco</h2><p class="price"></p></div>
+      <button type="button" data-product="refresco" aria-label="Personalizar refresco">Personalizar</button>
+    </div></article>
+  </section>
+</main>
+<dialog id="options" aria-labelledby="options-title">
+  <h2 id="options-title"></h2>
+  <div id="product-photo" class="dialog-photo" hidden></div>
+  <form method="dialog" id="product-form">
+  <fieldset id="ingredients">
+    <legend>Ingredientes</legend>
+    <label><input type="checkbox" checked> Lechuga</label>
+    <label><input type="checkbox" checked> Tomate</label>
+    <label><input type="checkbox" checked> Cebolla morada</label>
+    <label><input type="checkbox" checked> Queso</label>
+    <label><input type="checkbox" checked> Aguacate</label>
+  </fieldset>
+  <label id="broth-option"><input type="checkbox" name="broth"> Agregar consomé gratis</label>
+  <label id="fries-option" hidden><input type="checkbox" name="extra-fries"> <span id="fries-label">Agregar papas</span></label>
+  <label id="portion-option" hidden>Tamaño
+    <select name="portion"></select>
+  </label>
+  <label id="notes-option" hidden><span id="notes-label">Notas especiales</span>
+    <textarea name="notes" rows="2" maxlength="160"></textarea>
+  </label>
+  <div class="quantity">
+    <label for="quantity">Cantidad</label>
+    <div class="stepper">
+      <button id="quantity-down" class="secondary" type="button" aria-label="Quitar una unidad">−</button>
+      <input id="quantity" type="number" inputmode="numeric" required min="1" max="999" step="1" value="1">
+      <button id="quantity-up" class="secondary" type="button" aria-label="Agregar una unidad">+</button>
+    </div>
+  </div>
+  <p class="sr-only">Subtotal <output id="subtotal" for="quantity" aria-live="polite"></output></p>
+  <p id="product-error" class="error" role="alert"></p>
+  <div class="dialog-actions">
+    <button id="add-line" type="submit">Agregar al pedido</button>
+    <button id="close-options" class="secondary" type="button">Cancelar</button>
+  </div>
+  </form>
+</dialog>
+<div class="order-bar">
+  <p id="status" class="status" role="status"></p>
+  <button id="view-order" type="button">Ver mi pedido</button>
+</div>
+<dialog id="order" aria-labelledby="cart-title">
+  <h2 id="cart-title">Mi pedido</h2>
+  <p id="empty-order">Tu pedido está vacío.</p>
+  <ul id="cart-lines" class="order-lines"></ul>
+  <p class="total">Total <span id="order-total"></span></p>
+  <div class="dialog-actions">
+    <button id="review" type="button">Revisar pedido</button>
+    <button id="continue" class="secondary" type="button">Seguir en el menú</button>
+  </div>
+</dialog>
+<dialog id="checkout" aria-labelledby="checkout-title">
+  <h2 id="checkout-title">Revisa tu pedido</h2>
+  <ul id="checkout-lines" class="order-lines"></ul>
+  <p class="total">Total <span id="checkout-total"></span></p>
+  <form id="checkout-form">
+    <label>Tu nombre <input id="customer" type="text" required maxlength="80" autocomplete="given-name"></label>
+    <label>Mesa o ubicación (opcional) <input id="location" type="text" maxlength="100" placeholder="Ej. Mesa 4"></label>
+    <label>Indicaciones generales (opcional) <textarea id="order-notes" rows="2" maxlength="200"></textarea></label>
+    <p class="helper">WhatsApp abrirá el mensaje listo. Presiona Enviar ahí y espera la confirmación del local.</p>
+    <div class="dialog-actions">
+      <button class="whatsapp" type="submit">Abrir WhatsApp</button>
+      <button id="back-cart" class="secondary" type="button">Volver al pedido</button>
+    </div>
+  </form>
+</dialog>
+<script src="config.js" defer></script>
+<script src="pedido.js" defer></script>
+</body>
+</html>
