@@ -1,4 +1,7 @@
 const WHATSAPP = '526131056755';
+const TRANSFER_CLABE = '137042100602956338';
+const TRANSFER_BANK = 'BanCoppel';
+const TRANSFER_BENEFICIARY = 'Magda Cuevas Luna';
 const products = {
   tostada: { name: 'Tostada', price: 40, ingredients: true, broth: true },
   sope: { name: 'Sope', price: 40, ingredients: true, broth: true },

@@ -232,7 +232,38 @@ byId('review').addEventListener('click', () => {
 });
 byId('back-cart').addEventListener('click', () => { checkout.close(); order.showModal(); });
 
-function orderMessage(name, reference, notes) {
+const paymentLabels = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia' };
+const checkoutForm = byId('checkout-form');
+const clabe = TRANSFER_CLABE.trim();
+const hasClabe = /^\d{18}$/.test(clabe);
+const clabeField = byId('transfer-clabe');
+clabeField.value = hasClabe ? clabe : '';
+byId('transfer-bank').textContent = TRANSFER_BANK;
+byId('transfer-beneficiary').textContent = TRANSFER_BENEFICIARY;
+byId('transfer-account').hidden = !hasClabe;
+byId('transfer-unavailable').hidden = hasClabe;
+
+checkoutForm.addEventListener('change', event => {
+  if (event.target.name === 'payment') {
+    byId('transfer-details').hidden = checkoutForm.elements.payment.value !== 'transferencia';
+    byId('copy-status').textContent = '';
+  }
+});
+
+byId('copy-clabe').addEventListener('click', async () => {
+  if (!hasClabe) return;
+  const status = byId('copy-status');
+  try {
+    await navigator.clipboard.writeText(clabe);
+    status.textContent = 'CLABE copiada.';
+  } catch {
+    clabeField.focus();
+    clabeField.select();
+    status.textContent = 'Selecciona Copiar en tu celular o usa Ctrl+C en computadora.';
+  }
+});
+
+function orderMessage(name, reference, notes, payment) {
   return [
     'Pedido en el local · Tostadas del Fin',
     'Nombre: ' + name,
@@ -244,11 +275,12 @@ function orderMessage(name, reference, notes) {
     }),
     '',
     'Total: ' + money(total()) + ' MXN',
+    'Forma de pago: ' + payment,
     notes && 'Indicaciones: ' + notes
   ].filter(value => value !== false).join('\n');
 }
 
-byId('checkout-form').addEventListener('submit', event => {
+checkoutForm.addEventListener('submit', event => {
   event.preventDefault();
   const nameField = byId('customer');
   const name = nameField.value.trim();
@@ -259,7 +291,9 @@ byId('checkout-form').addEventListener('submit', event => {
   }
   const reference = byId('location').value.trim();
   const notes = byId('order-notes').value.trim().replace(/\s+/g, ' ');
-  const message = orderMessage(name, reference || false, notes || false);
+  const payment = paymentLabels[checkoutForm.elements.payment.value];
+  if (!payment) return;
+  const message = orderMessage(name, reference || false, notes || false, payment);
   window.location.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(message);
 });
 renderOrder();

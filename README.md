@@ -11,7 +11,7 @@ Prueba una torta con papas ($90), un sope con consomé ($40) y tres superburros 
 ## Publicar en GitHub Pages
 
 1. Crea o abre el repositorio del menú.
-2. Sube el contenido descomprimido a la raíz de la rama `main`. `index.html` y la carpeta `assets/` deben quedar al mismo nivel. El archivo `.nojekyll` indica que se trata de un sitio estático.
+2. Sube el contenido descomprimido a la raíz de la rama `main`. `index.html`, las fotos `.webp`, el CSS y el JavaScript deben quedar directamente en la raíz. El archivo `.nojekyll` indica que se trata de un sitio estático.
 3. En el repositorio, ve a **Settings → Pages**. En **Source**, elige **Deploy from a branch**, selecciona `main` y `/(root)`, y guarda.
 4. Abre el enlace que aparezca en **Pages** cuando termine el despliegue y prueba el flujo desde un celular.
 
@@ -21,7 +21,13 @@ Prueba una torta con papas ($90), un sope con consomé ($40) y tres superburros 
 
 - `config.js` contiene el número de WhatsApp en formato internacional sin signo `+`, los precios en MXN y las variantes de tamaño. El extra de papas se define en `fries` para la torta y el superburro.
 - `index.html` contiene las tarjetas, etiquetas y enlaces internos. Las bebidas aparecen con su nombre y precio mientras se incorporan sus fotos.
-- `assets/` contiene las fotos retocadas en WebP, con dos tamaños según la pantalla. Las papas usan una imagen ilustrativa derivada de la foto de salchipapas.
+- Las fotos retocadas están en la raíz en formato WebP, con dos tamaños según la pantalla. Las papas usan una imagen ilustrativa derivada de la foto de salchipapas.
 - `styles.css` define el diseño y `pedido.js` controla la personalización, el carrito y el armado del mensaje.
 
 No requiere servidor de aplicación, credenciales, compilación ni instalación de paquetes. El carrito se guarda en el navegador de cada cliente.
+
+## Forma de pago
+
+En la revisión del pedido, el cliente elige efectivo, tarjeta o transferencia. La selección se incluye en el mensaje de WhatsApp. Si elige transferencia, el menú muestra la CLABE y permite copiarla.
+
+En `config.js`, escribe la CLABE del negocio como una cadena de 18 dígitos, sin espacios, en `TRANSFER_CLABE`, y actualiza `TRANSFER_BANK` y `TRANSFER_BENEFICIARY` si cambian el banco o el titular. Con la CLABE vacía, el menú indica que hay que pedir la CLABE al personal del local. El menú registra la forma elegida y el negocio confirma el pago.
