@@ -262,7 +262,7 @@ header .card-notice {
   flex: none;
 }
 .check-badge { width: 34px; height: 34px; }
-#checkout[open] .check-badge { animation: order-confirm 360ms cubic-bezier(.2,.8,.3,1.25) both; }
+#payment-check:not([hidden]) { animation: order-confirm 360ms cubic-bezier(.2,.8,.3,1.25) both; }
 .order-feedback {
   display: inline-flex;
   align-items: center;
@@ -289,7 +289,43 @@ button:enabled:active { transform: scale(.97); filter: brightness(.94); }
   to { transform: translateY(0) scale(1); opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .card-icon, .card-icon::after, #checkout[open] .check-badge, .order-feedback { animation: none; }
+  .card-icon, .card-icon::after, #payment-check:not([hidden]), .order-feedback { animation: none; }
   button:enabled { transition: none; }
   button:enabled:active { transform: none; }
 }
+
+#order { background: #f8f2e8; }
+#order .review-heading { margin-bottom: 14px; }
+#order .review-heading h2 { font-size: 26px; letter-spacing: -.04em; }
+.cart-count { margin-left: auto; font-size: 13px; color: #654e42; font-weight: 650; white-space: nowrap; }
+#cart-lines { display: grid; gap: 8px; }
+#cart-lines .order-item {
+  padding: 10px;
+  background: #fffdfa;
+  border: 1px solid #e9ded1;
+  border-radius: 14px;
+}
+.line-summary .line-info { flex: 1; }
+.line-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.line-price { white-space: nowrap; color: #80251e; }
+#cart-lines .line-actions { align-items: center; justify-content: space-between; }
+.line-quantity, .line-management { display: flex; align-items: center; }
+.line-quantity { border: 1px solid #e9ded1; border-radius: 10px; font-size: 14px; font-weight: 700; }
+.line-quantity span { min-width: 18px; text-align: center; }
+.line-quantity button { background: transparent; font-size: 16px; }
+.line-management .line-link { color: #573f36; background: transparent; padding-inline: 6px; }
+.line-management .remove-line { color: #8c3027; }
+#order-total-row {
+  align-items: center;
+  margin: 12px 0 16px;
+  padding: 11px 13px;
+  background: #2b201a;
+  color: #fffdfa;
+  border-radius: 12px;
+}
+#order-total { font-size: 25px; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+#order .payment legend { font-size: 17px; margin-bottom: 8px; }
+#order #continue { background: transparent; color: #573f36; }
+#order #send-order { min-height: 48px; }
+#order .dialog-actions { background: #f8f2e8; }
+#order .dialog-actions { position: static; }

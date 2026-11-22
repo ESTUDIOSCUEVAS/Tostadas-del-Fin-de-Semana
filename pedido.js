@@ -4,7 +4,6 @@ const ingredients = ['Lechuga', 'Tomate', 'Cebolla morada', 'Queso', 'Aguacate']
 const byId = id => document.getElementById(id);
 const options = byId('options');
 const order = byId('order');
-const checkout = byId('checkout');
 const form = byId('product-form');
 const controls = form.elements;
 const ingredientInputs = [...byId('ingredients').querySelectorAll('input')];
@@ -122,10 +121,18 @@ function action(label, callback, className = 'secondary') {
 
 function summary(line) {
   const item = element('li', '', 'order-item');
-  const title = element('strong', line.quantity + ' × ' + products[line.id].name + ' · ' + money(line.quantity * unitPrice(line)));
+  const product = products[line.id];
+  const heading = element('div', '', 'line-heading');
+  heading.append(
+    element('strong', product.name + ' × ' + line.quantity),
+    element('strong', money(line.quantity * unitPrice(line)), 'line-price')
+  );
   const detail = element('div', '', 'line-summary');
-  const text = element('div', '');
-  text.append(title, element('p', [money(unitPrice(line)) + ' por unidad', description(line)].filter(Boolean).join(' · ')));
+  const text = element('div', '', 'line-info');
+  text.append(heading);
+  const choices = description(line);
+  if (choices) text.append(element('p', choices));
+  if (line.quantity > 1) text.append(element('p', money(unitPrice(line)) + ' por unidad'));
   const image = photos[line.id]?.cloneNode();
   if (image) {
     image.alt = '';
@@ -140,31 +147,37 @@ function summary(line) {
 
 function renderOrder() {
   const count = lines.reduce((sum, line) => sum + line.quantity, 0);
-  byId('view-order').textContent = count ? 'Ver mi pedido · ' + count + (count === 1 ? ' producto · ' : ' productos · ') + money(total()) : 'Ver mi pedido';
-  byId('review').disabled = !count;
+  const countLabel = count + (count === 1 ? ' producto' : ' productos');
+  byId('view-order').textContent = count ? 'Ver mi pedido · ' + countLabel + ' · ' + money(total()) : 'Ver mi pedido';
+  byId('cart-count').textContent = count ? countLabel : '';
   byId('empty-order').hidden = Boolean(count);
+  byId('order-total-row').hidden = !count;
   byId('order-total').textContent = money(total());
+  syncPayment();
   byId('cart-lines').replaceChildren(...lines.map((line, index) => {
     const item = summary(line);
     const actions = element('div', '', 'line-actions');
-    actions.append(
-      action('−1', () => {
-        if (line.quantity > 1) {
-          line.quantity--;
-          saveOrder();
-        }
-      }),
-      action('+1', () => { if (line.quantity < 999) { line.quantity++; saveOrder(); } }),
-      action('Editar', () => openProduct(line.id, line, index)),
-      action('Duplicar', () => openProduct(line.id, line)),
-      action('Eliminar', () => {
-        if (window.confirm('¿Quitar ' + products[line.id].name.toLowerCase() + ' del pedido?')) {
+    const name = products[line.id].name;
+    const quantity = element('div', '', 'line-quantity');
+    const decrease = action('−', () => { line.quantity--; saveOrder(); });
+    const increase = action('+', () => { line.quantity++; saveOrder(); });
+    decrease.disabled = line.quantity === 1;
+    increase.disabled = line.quantity >= 999;
+    decrease.setAttribute('aria-label', 'Quitar una unidad de ' + name);
+    increase.setAttribute('aria-label', 'Agregar una unidad de ' + name);
+    quantity.append(decrease, element('span', String(line.quantity)), increase);
+    const management = element('div', '', 'line-management');
+    management.append(
+      action('Editar', () => openProduct(line.id, line, index), 'line-link'),
+      action('Duplicar', () => openProduct(line.id, line), 'line-link'),
+      action('Quitar', () => {
+        if (window.confirm('¿Quitar ' + name.toLowerCase() + ' del pedido?')) {
           lines.splice(index, 1);
           saveOrder();
         }
-      })
+      }, 'line-link remove-line')
     );
-    actions.firstElementChild.disabled = line.quantity === 1;
+    actions.append(quantity, management);
     item.append(actions);
     return item;
   }));
@@ -220,15 +233,6 @@ options.addEventListener('close', () => {
 byId('close-options').addEventListener('click', () => options.close());
 byId('view-order').addEventListener('click', () => order.showModal());
 byId('continue').addEventListener('click', () => order.close());
-byId('review').addEventListener('click', () => {
-  byId('checkout-lines').replaceChildren(...lines.map(summary));
-  byId('checkout-total').textContent = money(total()) + ' MXN';
-  order.close();
-  checkout.showModal();
-  checkout.scrollTop = 0;
-});
-byId('back-cart').addEventListener('click', () => { checkout.close(); order.showModal(); });
-
 const paymentLabels = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia' };
 const checkoutForm = byId('checkout-form');
 const clabe = TRANSFER_CLABE.trim();
@@ -240,11 +244,24 @@ byId('transfer-beneficiary').textContent = TRANSFER_BENEFICIARY;
 byId('transfer-account').hidden = !hasClabe;
 byId('transfer-unavailable').hidden = hasClabe;
 
+function syncPayment() {
+  const hasItems = lines.length > 0;
+  const method = checkoutForm.elements.payment.value;
+  const ready = hasItems && Boolean(paymentLabels[method]);
+  const fields = byId('payment-methods');
+  fields.hidden = !hasItems;
+  fields.disabled = !hasItems;
+  byId('transfer-details').hidden = !hasItems || method !== 'transferencia';
+  byId('payment-check').hidden = !ready;
+  byId('whatsapp-help').hidden = !ready;
+  byId('send-order').hidden = !hasItems;
+  byId('send-order').disabled = !ready;
+}
+
 checkoutForm.addEventListener('change', event => {
   if (event.target.name === 'payment') {
-    byId('transfer-details').hidden = checkoutForm.elements.payment.value !== 'transferencia';
     byId('copy-status').textContent = '';
-    byId('send-order').disabled = !checkoutForm.elements.payment.value;
+    syncPayment();
   }
 });
 
@@ -278,7 +295,7 @@ function orderMessage(payment) {
 checkoutForm.addEventListener('submit', event => {
   event.preventDefault();
   const payment = paymentLabels[checkoutForm.elements.payment.value];
-  if (!payment) return;
+  if (!payment || !lines.length) return;
   const message = orderMessage(payment);
   window.location.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(message);
 });

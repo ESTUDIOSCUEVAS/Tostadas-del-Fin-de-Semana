@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f8f2e8">
 <meta name="description" content="Menú de Tostadas del Fin. Personaliza tus platillos y pide por WhatsApp en el local.">
 <title>Menú · Tostadas del Fin</title>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 <main>
@@ -115,24 +115,16 @@
   <button id="view-order" type="button">Ver mi pedido</button>
 </div>
 <dialog id="order" aria-labelledby="cart-title">
-  <h2 id="cart-title">Mi pedido</h2>
+  <div class="review-heading">
+    <span id="payment-check" class="check-badge" aria-hidden="true" hidden>✓</span>
+    <h2 id="cart-title" tabindex="-1" autofocus>Mi pedido</h2>
+    <span id="cart-count" class="cart-count"></span>
+  </div>
   <p id="empty-order">Tu pedido está vacío.</p>
   <ul id="cart-lines" class="order-lines"></ul>
-  <p class="total">Total <span id="order-total"></span></p>
-  <div class="dialog-actions">
-    <button id="review" type="button">Revisar pedido</button>
-    <button id="continue" class="secondary" type="button">Seguir en el menú</button>
-  </div>
-</dialog>
-<dialog id="checkout" aria-labelledby="checkout-title">
-  <div class="review-heading">
-    <span class="check-badge" aria-hidden="true">✓</span>
-    <h2 id="checkout-title" tabindex="-1" autofocus>Tu pedido está listo para revisar</h2>
-  </div>
-  <ul id="checkout-lines" class="order-lines"></ul>
-  <p class="total">Total <span id="checkout-total"></span></p>
+  <p id="order-total-row" class="total">Total a pagar <span id="order-total"></span></p>
   <form id="checkout-form">
-    <fieldset class="payment">
+    <fieldset id="payment-methods" class="payment" hidden disabled>
       <legend>¿Cómo vas a pagar?</legend>
       <div class="payment-options">
         <label><input type="radio" name="payment" value="efectivo" required> Efectivo</label>
@@ -158,14 +150,14 @@
         </div>
       </div>
     </fieldset>
-    <p class="helper">Elige cómo pagar. En WhatsApp, presiona «Enviar» para compartir el pedido con el local.</p>
+    <p id="whatsapp-help" class="helper" hidden>En WhatsApp, toca «Enviar» para compartir tu pedido.</p>
     <div class="dialog-actions">
-      <button id="send-order" class="whatsapp" type="submit" disabled>Abrir WhatsApp</button>
-      <button id="back-cart" class="secondary" type="button">Volver al pedido</button>
+      <button id="send-order" class="whatsapp" type="submit" hidden disabled>Abrir WhatsApp</button>
+      <button id="continue" class="secondary" type="button">Seguir en el menú</button>
     </div>
   </form>
 </dialog>
-<script src="config.js" defer></script>
-<script src="pedido.js" defer></script>
+<script src="config.js?v=4" defer></script>
+<script src="pedido.js?v=4" defer></script>
 </body>
 </html>

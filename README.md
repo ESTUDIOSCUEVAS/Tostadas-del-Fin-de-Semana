@@ -28,6 +28,6 @@ No requiere servidor de aplicación, credenciales, compilación ni instalación 
 
 ## Forma de pago
 
-En la revisión del pedido, el cliente solo elige efectivo, tarjeta o transferencia. El menú anuncia desde el inicio que se acepta tarjeta. La selección se incluye en el mensaje de WhatsApp. Si elige transferencia, el menú muestra la CLABE y permite copiarla.
+En «Mi pedido» se revisan los productos, se ve el total y se elige efectivo, tarjeta o transferencia. El menú anuncia desde el inicio que se acepta tarjeta. La selección se incluye en el mensaje de WhatsApp. Si elige transferencia, el menú muestra la CLABE y permite copiarla.
 
 En `config.js`, escribe la CLABE del negocio como una cadena de 18 dígitos, sin espacios, en `TRANSFER_CLABE`, y actualiza `TRANSFER_BANK` y `TRANSFER_BENEFICIARY` si cambian el banco o el titular. Con la CLABE vacía, el menú indica que hay que pedir la CLABE al personal del local. El menú registra la forma elegida y el negocio confirma el pago.
